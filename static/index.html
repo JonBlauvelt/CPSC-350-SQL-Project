@@ -52,11 +52,11 @@
 			</section>
     
     <!-- login popup -->
-    <div id = "popupbox" ng-submit="processLogin()">
-      <form method = "post" action = "">
+    <div id = "popupbox" >
+      <form ng-submit="processLogin()">
         <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username>
         <input type = "password" id = "password" ng-model="password" placeholder = "Password" name = "password">
-        <input type = "submit" id = "login_submit" value = "Login" ng-disabled="!password">
+        <input type = "submit" id = "login_submit" value = "Login" ng-disabled="!password" ng-disabled"!username">
       </form>
     </div>
 

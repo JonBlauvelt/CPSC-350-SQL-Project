@@ -2,7 +2,9 @@
 
 --db
 DROP DATABASE IF EXISTS pollus;
+DROP ROLE IF EXISTS pollster;
 CREATE DATABASE pollus;
+
 \c pollus;
 CREATE EXTENSION pgcrypto;
 
@@ -20,7 +22,7 @@ CREATE TABLE users (
     ZIP TEXT NOT NULL DEFAULT '',
     party_affiliation TEXT NOT NULL DEFAULT '',
     income INTEGER NOT NULL DEFAULT 0,
-    education_level INT NOT NULL,
+    education_level INT NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
 );
 
@@ -53,4 +55,5 @@ CREATE TABLE votes (
 
 --db user
 CREATE USER pollster WITH PASSWORD 'changeme';
-GRANT ALL PRIVILEGES ON pollus TO pollster;
+GRANT ALL PRIVILEGES ON users TO pollster;
+GRANT ALL PRIVILEGES ON SEQUENCE users_user_id_seq TO pollster;

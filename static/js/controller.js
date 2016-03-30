@@ -1,3 +1,4 @@
+//helper function for show/hide
 function login(showhide){
   if(showhide == "show"){
     document.getElementById('popupbox').style.visibility="visible";
@@ -31,7 +32,10 @@ pollarizeApp.controller('appController', function($scope){
   $scope.processLogin = function processLogin() {
      console.log("trying login");
      login('hide');
-     socket.emit('login', ($scope.username, $scope.password));
+     socket.emit('login', $scope.username, $scope.password);
+     $scope.username = '';
+     $scope.password = '';
+     $scope.$apply();
   };
   
 });//end controller
