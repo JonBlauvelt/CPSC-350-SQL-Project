@@ -978,7 +978,7 @@
 
 	#banner {
 		background-color: #666666;
-		background-image: url("../images/banner.jpg");
+		background-image: url("../images/forreal.jpg");
 		background-size: cover;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -1085,3 +1085,19 @@
 		#footer .icons a {
 			color: #bbb;
 		}
+
+#popupbox{
+margin: 0; 
+margin-left: 10%; 
+margin-right: 70%;
+margin-top: 70px; 
+padding-top: 10px; 
+width: 20%; 
+height: 170px; 
+position: absolute; 
+background: #FFFFFF; 
+border: solid #909090 2px; 
+z-index: 9; 
+font-family: arial; 
+visibility: hidden; 
+}

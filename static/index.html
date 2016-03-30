@@ -4,13 +4,16 @@
 	templated.co @templatedco
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
-<html>
+<html ng-app="pollarizeApp">
 	<head>
 		<title>POLLarize</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
+    <script src=js/controller.js></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
@@ -21,18 +24,18 @@
 			<link rel="stylesheet" href="css/style-xlarge.css" />
 		</noscript>
 	</head>
-	<body id="top">
+	<body id="top" ng-controller="appController">
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
 				<h1><a href="#">POLLarize</a></h1>
-				<nav id="nav">
+        <nav id="nav">
 					<ul>
 						<li><a href="index.html">Home</a></li>
 						<li><a href="left-sidebar.html">Left Sidebar</a></li>
 						<li><a href="right-sidebar.html">Right Sidebar</a></li>
 						<li><a href="no-sidebar.html">No Sidebar</a></li>
-						<li><a href="#" class="button special">Login</a></li>
+						<li><a href="" ng-click="gotoLogin()" class="button special">Login</a></li>
 					</ul>
 				</nav>
 			</header>	
@@ -47,6 +50,15 @@
 					</ul>
 				</div>
 			</section>
+    
+    <!-- login popup -->
+    <div id = "popupbox" ng-submit="processLogin()">
+      <form method = "post" action = "">
+        <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username>
+        <input type = "password" id = "password" ng-model="password" placeholder = "Password" name = "password">
+        <input type = "submit" id = "login_submit" value = "Login" ng-disabled="!password">
+      </form>
+    </div>
 
 		<!-- One -->
 			<section id="one" class="wrapper style1">
