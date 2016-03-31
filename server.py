@@ -3,7 +3,7 @@ from dbconstants import DATABASE, USER, PW, HOST
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask.ext.socketio import SocketIO, emit, disconnect #import socketio things
 from flask_socketio import join_room, leave_room, disconnect #import socketio room things
-from flask.ext.login import LoginManager
+import flask.ext.login as flask_login
 
 import psycopg2
 import psycopg2.extras
@@ -12,12 +12,19 @@ import psycopg2.extras
 app = Flask(__name__, static_url_path='')
 app.config['SECRET_KEY'] = 'secret!'
 app.secret_key = os.urandom(24).encode('hex')
-login_manager = LoginManager()
+login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 #create socketio app - pass in the flask app created above
 socketio = SocketIO(app)
 
+#flask login things
+class User(flask_login.user_loader):
+    pass
+
+@login_manager.user_loader
+def user_loader():
+    pass
 #connect to db function
 def connectToDB():
 
@@ -59,13 +66,19 @@ def attemptLogin(uname,pw):
         if(session['userData']):
             #debug
             print('credentials verified in db')
+            emit('successful_login', uname)
         else:
             print('credential verification failed')
+            emit('failed_login', uname)
     except:
         #debug
         print('login exception')
 
-
+#logout
+@socketio.on('logout', namespace='/poll')
+def logout():
+  logout_user()
+  return redirect('/')
 
 #when someone first lands
 @app.route('/')
