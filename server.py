@@ -18,13 +18,6 @@ login_manager.init_app(app)
 #create socketio app - pass in the flask app created above
 socketio = SocketIO(app)
 
-#flask login things
-class User(flask_login.user_loader):
-    pass
-
-@login_manager.user_loader
-def user_loader():
-    pass
 #connect to db function
 def connectToDB():
 
@@ -42,42 +35,121 @@ def connectToDB():
         #debug msg
         print("Can't connect to database")
 
-@socketio.on('connect', namespace='/poll')
-def makeConnection():
-    print('connected')
 
-@socketio.on('login', namespace='/poll')
-def attemptLogin(uname,pw):
+###########################################
+#flask login things
+###########################################
+
+class User(flask_login.UserMixin):
+    pass
+
+#helper function to handle verification
+def verify_user(uname,pw):
     #debug
-    print('received login attempt with creds: ' + uname + ', ' + pw) 
+    print('verify user with creds: ' + uname + ', ' + pw) 
 
     #connect to db
     conn = connectToDB()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     #construct query
-    query = 'SELECT * FROM users WHERE username = %s AND '+\
-            'password = crypt(%s,password);'
+    query = 'SELECT username,user_id FROM users WHERE '+\
+            'username = %s AND password = crypt(%s,password);'
 
     #execute it
     try:
         cur.execute(query,(uname,pw))
-        session['userData'] = cur.fetchall()
-        if(session['userData']):
+        userData = cur.fetchall()
+        if(userData):
+
             #debug
             print('credentials verified in db')
-            emit('successful_login', uname)
-        else:
-            print('credential verification failed')
-            emit('failed_login', uname)
+
+            return userData
+
     except:
         #debug
         print('login exception')
 
+#wrapper for User constructor
+def create_user(userData):
+    user = User()
+    user.id = userData[0]['user_id']
+    user.name = userData[0]['username']
+    user.is_authinticated = True
+    return user
+
+@login_manager.user_loader
+def user_loader(uname,pw):
+
+    #debug
+    print('load user with creds: ' + uname + ', ' + pw) 
+
+    #verify user
+    userData = verify_user(uname,pw)
+    
+    if(userData):
+
+        #debug
+        print("received the verified user")
+
+        #create and return user 
+        return create_user(userData)
+
+#I don't think i'll be using this, but here it is
+@login_manager.request_loader
+def request_loader(request):
+
+    #debug
+    print("request load: " + str(request))
+
+    #verify
+    username = request.form.get('username')
+    pw = request.form.get('password')
+    userData = verify_user(username,pw)
+
+    #check for success
+    if(userData):
+         
+        #debug
+        print('received verified user (from form)')
+
+        #create and return user
+        return create_user(userData)
+
+@socketio.on('connect', namespace='/poll')
+def makeConnection():
+    print('connected')
+
+@socketio.on('login', namespace='/poll')
+def attemptLogin(uname,pw):
+
+    #debug
+    print('received login attempt with creds: ' + uname + ', ' + pw) 
+
+    #verify
+    userData = verify_user(uname, pw)
+
+    if(userData):
+
+        #create user
+        user = create_user(userData)
+        
+        #login
+        flask_login.login_user(user, remember=True)
+
+        #emit success
+        emit('successful_login', user.name)
+    
+    else:
+        flask.flash('esd')
+        emit('failed_login')
+
+
 #logout
 @socketio.on('logout', namespace='/poll')
 def logout():
-  logout_user()
+  flaks_login.logout_user()
   return redirect('/')
 
 #when someone first lands
