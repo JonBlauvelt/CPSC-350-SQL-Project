@@ -7,23 +7,27 @@ pollarizeApp.controller('appController', function($scope){
   //make connection back to flask app
   var socket = io.connect(document.domain + ':' + location.port + '/poll');    
 
-  socket.on('logged_in', function(name){
-    console.log('howdy');
-    $scope.displayname = name; 
-    $scope.loggedin = true;
-    $scope.$apply();
+  //vars
+  $scope.username = '';
+  $scope.displayname = '';
+  $scope.loggedin = false;
+  $scope.showloginform = false;
+  $scope.showreg=false;
+  $scope.username = '';
+  $scope.password = '';
+  $scope.login_msg = 'Get on in Here.';
+  
 
-  }); 
 
-  socket.on('not_logged_in', function(){
-    console.log('new around here are ya')
-    $scope.displayname = ''; 
-    $scope.loggedin = false;
-    $scope.$apply();
-  });
  
-  $scope.gotoLogin = function gotoLogin(){
+
+
+
+  //local
+  
+  $scope.gotoLogin = function(){
     console.log("in goto login");
+    $scope.login_msg = 'Get on in Here.';
     $scope.showloginform = true;
   };
 
@@ -32,8 +36,7 @@ pollarizeApp.controller('appController', function($scope){
     $scope.showreg = true;
   }; 
 
-
-  $scope.processLogin = function processLogin() {
+  $scope.processLogin = function () {
      console.log("trying login");
      socket.emit('login', $scope.username, $scope.password);
      $scope.username = '';
@@ -47,8 +50,10 @@ pollarizeApp.controller('appController', function($scope){
   
   };
 
+  //socket 
+ 
   socket.on('successful_login', function(uname){
-      console.log('logged in as ' +uname);
+      console.log('logged in as '  + $scope.displayname);
       $scope.displayname = uname;
       $scope.loggedin = true;
       $scope.showloginform = false;
@@ -59,7 +64,9 @@ pollarizeApp.controller('appController', function($scope){
 
   socket.on('failed_login', function(){
     console.log('failed login');
-  
+    $scope.login_msg = "That's not quite right.";
+    $scope.$apply();
   });
+
 
 });//end controller

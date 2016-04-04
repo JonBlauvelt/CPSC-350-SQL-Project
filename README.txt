@@ -18,14 +18,20 @@ INSTALLING THE SYSTEM:
       \i pollus.sql 
   8) Change the password for the postgresql user 'pollus' that was created:
       ALTER USER pollus WITH PASSWORD '<make up a pw>';
-  9) Make a file to store your data base info in the main project directory
+  9) Change into the project directory with the shell command:
+      cd ./CPSC-350-SQL-Project
+  10) Make a file to store your data base info in the main project directory
      and call it 'dbconstants.py'.  It should contain the following lines:
       DATABASE = 'pollus'
       PW = '<the password you just set'
       USER = 'pollster'
       HOST = 'localhost'
-  10) Change into the project directory with the shell command:
-      cd ./CPSC-350-SQL-Project
-  11) Run the server with the following shell commands: 
+  11) Open the server.py file in your favorite text editor (hopefully this is vim).
+      Edit the "secret key" at the top.  You can optain a new one from the
+      python interpreter as follows:
+      import os
+      os.urandom(24)
+      copy the results and past them into the server.py file
+  12) Run the server with the following shell commands: 
      screen
      sudo python server.py

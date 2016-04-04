@@ -24,22 +24,9 @@
 			<link rel="stylesheet" href="css/style-xlarge.css" />
 		</noscript>
 	</head>
-	<body id="top">
+	<body id="top" ng-controller="appController">
 
-    <!-- login popup -->
-    <div id="modalbackdrop" class="modal" ng-show="showloginform">
-    <div id="login" class="modal-content">
-      <form method="post">
-        <h3>Get on in here.</h3>
-        <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username size="5"></input>
-        <input type = "password" id = "password" ng-model="password" placeholder = "Password" name = "password" size="5"></input>
-        <input type = "submit" id = "login_submit" value = "Login" ng-disabled="!password" ng-disabled"!username"></input>
-      </form>
-    </div>
-   </div>
-    <!-- login popup -->
-
-    <div  ng-controller="appController">
+    
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
 				<h1><a href="/">POLLarize</a></h1>
@@ -62,7 +49,21 @@
 					</ul>
 				</div>
 			</section>
-    
+
+
+    <!-- login popup -->
+    <div id="modalbackdrop" class="modal" ng-show="showloginform">
+    <div id="login" class="modal-content" >
+      <form ng-submit="processLogin()">
+        <h3 ng-bind="login_msg"></h3>
+        <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username size="5"></input>
+        <input type = "password" id = "password" ng-model="password" placeholder = "Password" name = "password" size="5"></input>
+        <input type = "submit" id = "login_submit" value = "Login" ng-disabled="!password" ng-disabled"!username"></input>
+      </form>
+    </div>
+   </div>
+    <!-- login popup -->
+
         <div id="regbackdrop" class="modal" ng-show="showreg">
     <div id="register" class="modal-content-large" ng-show="showreg">
       <form ng-submit="processLogin()">
@@ -133,7 +134,6 @@
         </span>
         <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!password" ng-disabled"!username">
       </form>
-    </div>
    </div>
 
 

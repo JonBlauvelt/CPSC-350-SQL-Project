@@ -3,7 +3,8 @@ from dbconstants import DATABASE, USER, PW, HOST
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask.ext.socketio import SocketIO, emit #import socketio things
 from flask_socketio import join_room, leave_room, disconnect #import socketio room things
-
+import flask_login
+import threading
 import psycopg2
 import psycopg2.extras
 
@@ -60,49 +61,47 @@ def verify_user(uname,pw):
         #debug
         print('login exception')
 
+#socketio connection made
 @socketio.on('connect', namespace='/poll')
 def makeConnection():
+
     print('connected')
-
-#@socketio.on('login', namespace='/poll')
-def attemptLogin(uname,pw):
-
-    #debug
-    print('received login attempt with creds: ') 
-
-    #verify
-    userData = verify_user(uname, pw)
-
-    if(userData):
-        session['logged_in'] = True
-        session['name'] = uname
-        session['id'] = userData['user_id']
-
-        #emit success
-        emit('successful_login', uname)
-    
-    else:
-        emit('failed_login')
 
 
 #logout
 @socketio.on('logout', namespace='/poll')
 def logout():
-  return redirect('/')
+    return redirect('/')
+
+
+@socketio.on('login', namespace='/poll')
+def attempt_login(uname, pw):
+        #debug
+        print('received login attempt with creds: ') 
+
+        #verify
+        userData = \
+            verify_user(uname,pw)
+
+        if(userData):
+            session['logged_in'] = True
+            session['name'] = userData['username']
+            session['id'] = userData['user_id']
+
+            #emit success
+            emit('successful_login', uname)
+        
+        else:
+            emit('failed_login')
 
 #when someone first lands
-@app.route('/', methods=['GET','POST'])
+@app.route('/')
 def mainIndex():
-    if request.method == 'POST':
-        attemptLogin(request.form['username'],request.form['password'])
-    if('logged_in' in session):
-        print 'already logged in'
 
-        #emit success
-        #emit('successful_login', uname)
-            
-             
     return app.send_static_file('index.html')
+
+
+
 
 # start the server - change to socketio
 if __name__ == '__main__':
