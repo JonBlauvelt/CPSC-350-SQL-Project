@@ -36,18 +36,10 @@ pollarizeApp.controller('appController', function($scope){
     $scope.showreg = true;
   }; 
 
-  $scope.processLogin = function () {
-     console.log("trying login");
-     socket.emit('login', $scope.username, $scope.password);
-     $scope.username = '';
-     $scope.password = '';
-  };
-
   $scope.logout = function logout() {
      console.log('logging out'); 
      socket.emit('logout');
      $scope.loggedin = false;
-  
   };
 
   //socket 
@@ -59,7 +51,6 @@ pollarizeApp.controller('appController', function($scope){
       $scope.showloginform = false;
       console.log('showloginform = ' + $scope.showloginform);
       $scope.$apply();
-      
   }); 
 
   socket.on('failed_login', function(){

@@ -18,6 +18,12 @@
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -34,7 +40,7 @@
 					<ul>
 						<li><a href="/">Home</a></li>
 						<li><a href="" id="headerLoginButton" ng-hide="loggedin" ng-click="gotoLogin()" class="button special">Login</a></li>
-            <li><a href="" id="logoutLink" ng-show="loggedin" ng-click="logout()">Welcome {{displayname}}, logout?</a></li>
+            <li><a href="/logout" id="logoutLink" ng-show="loggedin" ng-click="logout()">Welcome {{displayname}}, logout?</a></li>
 					</ul>
 				</nav>
 			</header>	
@@ -51,10 +57,10 @@
 			</section>
 
 
-    <!-- login popup -->
+    <!-- begin login modal -->
     <div id="modalbackdrop" class="modal" ng-show="showloginform">
     <div id="login" class="modal-content" >
-      <form ng-submit="processLogin()">
+      <form method="post" action="/login">
         <h3 ng-bind="login_msg"></h3>
         <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username size="5"></input>
         <input type = "password" id = "password" ng-model="password" placeholder = "Password" name = "password" size="5"></input>
@@ -62,7 +68,7 @@
       </form>
     </div>
    </div>
-    <!-- login popup -->
+    <!-- end login modal -->
 
         <div id="regbackdrop" class="modal" ng-show="showreg">
     <div id="register" class="modal-content-large" ng-show="showreg">
