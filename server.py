@@ -70,59 +70,39 @@ def makeConnection():
     if('logged_in' in session):
         emit('successful_login', session['name'])
 
+#socketio client disconnected
 @socketio.on('disconnect', namespace='/poll')
 def test_disconnect():
     print('Client disconnected')
 
 #logout
-@socketio.on('logout', namespace='/poll')
+@app.route('/logout')
 def logout():
-    return redirect('/')
+    session.clear()
+    return redirect(url_for('mainIndex'))
 
-
-#@socketio.on('login', namespace='/poll')
-#ef attempt_login(uname, pw):
-#       #debug
-#       print('received login attempt with creds: ') 
-
-#       #verify
-#       userData = \
-#           verify_user(uname,pw)
-
-#       if(userData):
-#           session['logged_in'] = True
-#           session['name'] = userData['username']
-#           session['id'] = userData['user_id']
-
-#           #emit success
-#           emit('successful_login', uname)
-#       
-#       else:
-#           emit('failed_login')
 #login
 @app.route('/login',methods=['GET','POST'])
 def login():
 
-    if(request.method == 'POST'):
+    #debug
+    print('received login attempt with creds: ') 
 
-        #debug
-        print('received login attempt with creds: ') 
+    #verify
+    userData = \
+        verify_user(request.form['username'],
+                request.form['password'])
 
-        #verify
-        userData = \
-            verify_user(request.form['username'],
-                    request.form['password'])
+    if(userData):
+        session['logged_in'] = True
+        session['name'] = userData['username']
+        session['id'] = userData['user_id']
 
-        if(userData):
-            session['logged_in'] = True
-            session['name'] = userData['username']
-            session['id'] = userData['user_id']
-
-            #emit success
-            print('successful_login', uname)
-            
-        else:
-            print('failed_login')
+        #emit success
+        print('successful_login')
+        
+    else:
+        print('failed_login')
 
     return redirect(url_for('mainIndex'))
 

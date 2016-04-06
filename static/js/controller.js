@@ -16,11 +16,6 @@ pollarizeApp.controller('appController', function($scope){
   $scope.username = '';
   $scope.password = '';
   $scope.login_msg = 'Get on in Here.';
-  
-
-
- 
-
 
 
   //local
@@ -35,12 +30,6 @@ pollarizeApp.controller('appController', function($scope){
     console.log('displaying reg form');
     $scope.showreg = true;
   }; 
-
-  $scope.logout = function logout() {
-     console.log('logging out'); 
-     socket.emit('logout');
-     $scope.loggedin = false;
-  };
 
   //socket 
  
