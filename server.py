@@ -76,9 +76,12 @@ def populate_dropdown(menu_name):
     if menu_name == "states":
         query = 'SELECT state_abbrev FROM states;'
     elif menu_name == "parties":
-        query = "SELECT  CONCAT(party_name,' (', year_founded, ')') from parties;"
+        query = "SELECT  CONCAT(party_name,' (', year_founded, ')') "+\
+                "FROM parties;"
     elif menu_name == "ed_levs":
         query = 'SELECT  ed_lev from ed_levs;'
+    elif menu_name == "incomes":
+        query = 'SELECT income from incomes;'
 
     #execute it
     try:
@@ -99,7 +102,6 @@ def populate_dropdown(menu_name):
         print('exception retrieving ' + menu_name)
 
 
-
 ###Socketio###
 
 #socketio connection made
@@ -109,6 +111,7 @@ def makeConnection():
     print('connected')
 
     if('logged_in' in session):
+        print 'validating login'
         emit('successful_login', session['name'])
 
 #socketio client disconnected
@@ -125,7 +128,7 @@ def get_states():
     populate_dropdown('states')
 
   
-#socketio get states
+#socketio get parties
 @socketio.on('get_parties', namespace='/poll')
 def get_parties():
     
@@ -133,7 +136,67 @@ def get_parties():
 
     populate_dropdown('parties')
 
-     
+#socketio get ed_levs
+@socketio.on('get_ed_levs', namespace='/poll')
+def get_ed_levs():
+    
+    print 'in get ed_levs'
+
+    populate_dropdown('ed_levs')
+
+#socketio get incomes
+@socketio.on('get_incomes', namespace='/poll')
+def get_incomes():
+    
+    print 'in get incomes'
+
+    populate_dropdown('incomes')
+
+#socketio register new user
+@socketio.on('register', namespace='/poll')
+def register_new_user(user_data):
+    
+    failed = False
+
+    print 'received registration request'
+
+    party_separater = "' ('"
+
+    query = "INSERT INTO users "+\
+    "(username, password, zip, dob, city, state_id, ed_lev_id, "+\
+    "income_id, party_id) VALUES (%s,crypt(%s, gen_salt('bf')), "+\
+    "%s,%s,%s,(SELECT state_id FROM states WHERE state_abbrev = %s), "+\
+    "(SELECT ed_lev_id FROM ed_levs WHERE ed_lev = %s), "+\
+    "(SELECT income_id FROM incomes WHERE income = %s), "+\
+    "(SELECT party_id FROM parties WHERE party_name = SUBSTRING(%s FROM "+\
+    "0 FOR POSITION(" + party_separater + " IN  %s))));"
+
+    print(query)
+
+    #connect to db
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    try:
+        # insert new user
+        query = cur.mogrify(query, tuple(user_data))
+        cur.execute(query)
+
+    except:
+        #debug
+        print 'failed registration'
+        
+        # keep track
+        failed = True
+        
+        #failed
+        conn.rollback()
+        
+    #commit
+    conn.commit() 
+
+    #emit
+    emit('registration_complete', failed)
 
 
 ### Flask app route###
@@ -175,8 +238,6 @@ def login():
 def mainIndex():
 
     return app.send_static_file('index.html')
-
-
 
 
 # start the server - change to socketio
