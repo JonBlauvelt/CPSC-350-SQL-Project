@@ -76,7 +76,7 @@ def populate_dropdown(menu_name):
     if menu_name == "states":
         query = 'SELECT state_abbrev FROM states;'
     elif menu_name == "parties":
-        query = 'SELECT  party from parties;'
+        query = "SELECT  CONCAT(party_name,' (', year_founded, ')') from parties;"
     elif menu_name == "ed_levs":
         query = 'SELECT  ed_lev from ed_levs;'
 
@@ -131,33 +131,7 @@ def get_parties():
     
     print 'in get parties'
 
-    #connect to db
-    conn = connectToDB()
-    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-    #construct query
-    query = 'SELECT parties FROM states;'
-
-    #execute it
-    try:
-        cur.execute(query)
-        states = cur.fetchall()
-
-        if(states):
-
-            #debug
-            print('retrieved states')
-
-            for party in parties:
-
-                emit('party',state)
-
-    except:
-        #debug
-        print('exception retrieving states')
-
-
-
+    populate_dropdown('parties')
 
      
 

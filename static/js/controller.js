@@ -64,6 +64,7 @@ pollarizeApp.controller('appController', function($scope){
     console.log('displaying reg form');
     $scope.showreg = true;
     $scope.get_states();
+    $scope.get_parties();
   }; 
 
   //socket 
@@ -86,6 +87,12 @@ pollarizeApp.controller('appController', function($scope){
   socket.on('states', function(states){
     console.log('got the states: ' + states); 
     $scope.states.push(states);
+    $scope.$apply();
+  });
+
+  socket.on('parties', function(parties){
+    console.log('got the parties: ' + parties); 
+    $scope.parties.push(parties);
     $scope.$apply();
   });
 

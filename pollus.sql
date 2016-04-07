@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS parties;
 CREATE TABLE parties (
   party_id SERIAL NOT NULL,
   party_name TEXT NOT NULL DEFAULT '',
-  year_founded INTEGER NOT NULL DEFAULT 0,
+  year_founded TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (party_id)
 );
 
@@ -127,7 +127,7 @@ INSERT INTO states (state_abbrev) VALUES ('WY');
 
 
 --party table entries
-INSERT INTO parties (party_name, year_founded) VALUES ('Independent - no affiliation', '0');
+INSERT INTO parties (party_name, year_founded) VALUES ('Independent','no affiliation');
 INSERT INTO parties (party_name, year_founded) VALUES ('Democratic Party', '1828');
 INSERT INTO parties (party_name, year_founded) VALUES ('Republican Party', '1854');
 INSERT INTO parties (party_name, year_founded) VALUES ('Libertarian Party', '1971');
@@ -179,5 +179,7 @@ INSERT INTO ed_levels (ed_level) VALUES ('Advanced Degree(s)');
 CREATE USER pollster WITH PASSWORD 'hucklebucklebeanstalk123!!';
 GRANT ALL PRIVILEGES ON users TO pollster;
 GRANT ALL PRIVILEGES ON states TO pollster;
+GRANT ALL PRIVILEGES ON parties TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE users_user_id_seq TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE states_state_id_seq TO pollster;
+GRANT ALL PRIVILEGES ON SEQUENCE parties_party_id_seq TO pollster;
