@@ -83,7 +83,7 @@ pollarizeApp.controller('appController', function($scope){
     $scope.$apply();
   });
 
-  socket.on('state', function(states){
+  socket.on('states', function(states){
     console.log('got the states: ' + states); 
     $scope.states.push(states);
     $scope.$apply();

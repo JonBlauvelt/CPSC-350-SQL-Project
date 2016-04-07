@@ -64,6 +64,39 @@ def verify_user(uname,pw):
         print('login exception')
 
 #populate drop downs
+def populate_dropdown(menu_name):
+
+    print 'in get ' + menu_name
+
+    #connect to db
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    #construct query
+    if menu_name == "states":
+        query = 'SELECT state_abbrev FROM states;'
+    elif menu_name == "parties":
+        query = 'SELECT  party from parties;'
+    elif menu_name == "ed_levs":
+        query = 'SELECT  ed_lev from ed_levs;'
+
+    #execute it
+    try:
+        cur.execute(query)
+        menu_items = cur.fetchall()
+
+        if(menu_items):
+
+            #debug
+            print('retrieved ' + menu_name)
+
+            for menu_item in menu_items:
+
+                emit(menu_name, menu_item)
+
+    except:
+        #debug
+        print('exception retrieving ' + menu_name)
 
 
 
@@ -89,32 +122,9 @@ def get_states():
     
     print 'in getStates'
 
-    #connect to db
-    conn = connectToDB()
-    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    populate_dropdown('states')
 
-    #construct query
-    query = 'SELECT state_abbrev FROM states;'
-
-    #execute it
-    try:
-        cur.execute(query)
-        states = cur.fetchall()
-
-        if(states):
-
-            #debug
-            print('retrieved states')
-
-            for state in states:
-
-                emit('state',state)
-
-    except:
-        #debug
-        print('exception retrieving states')
-
-
+  
 #socketio get states
 @socketio.on('get_parties', namespace='/poll')
 def get_parties():
