@@ -209,6 +209,7 @@
 	}
 
 	input[type="text"],
+	input[type="date"],
 	input[type="password"],
 	input[type="email"],
 	select,
@@ -231,6 +232,7 @@
 	}
 
 		input[type="text"]:invalid,
+		input[type="date"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
 		select:invalid,
@@ -239,6 +241,7 @@
 		}
 
 		input[type="text"]:focus,
+		input[type="date"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
 		select:focus,
@@ -281,6 +284,7 @@
 		}
 
 	input[type="text"],
+	input[type="date"],
 	input[type="password"],
 	input[type="email"],
 	select {
@@ -1124,7 +1128,7 @@
 /* Modal Content/Box */
 .modal-content-large {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */

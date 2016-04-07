@@ -11,21 +11,15 @@
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
 		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+	  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
     <script src=js/controller.js></script>
 		<script src="js/jquery.min.js"></script>
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
-		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
+	  <noscript>
+    	<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
 			<link rel="stylesheet" href="css/style-xlarge.css" />
 		</noscript>
@@ -35,7 +29,7 @@
     
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="/">POLLarize</a></h1>
+        <h1><a href="/">POLLarize</a></h1>
         <nav id="nav">
 					<ul>
 						<li><a href="/">Home</a></li>
@@ -61,6 +55,8 @@
     <!-- begin login modal -->
     <div id="modalbackdrop" class="modal" ng-show="showloginform">
     <div id="login" class="modal-content" >
+      <div class=pull-right><button type="close_button" class="close" style="border:none; background:none;" aria-label="Close" ng-click="exit()">
+          <span aria-hidden="true"><font size="5">&times;</font></span></button></div>
       <form method="post" action="/login">
         <h3 ng-bind="login_msg"></h3>
         <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username size="5"></input>
@@ -73,73 +69,24 @@
 
         <div id="regbackdrop" class="modal" ng-show="showreg">
     <div id="register" class="modal-content-large" ng-show="showreg">
-      <form ng-submit="processLogin()">
+      <div class=pull-right><button type="close_button" class="close" style="border:none; background:none;" aria-label="Close" ng-click="exit()">
+          <span aria-hidden="true"><font size="5">&times;</font></span></button></div>
+      <form ng-submit="register()">
         <h3>Let's get started.</h3>
-        <input type = "text" id = "newuser" ng-model="newuser" placeholder = "Username" name = newuser size="5">
-        <input type = "text" id = "firstname" ng-model="firstname" placeholder = "First name" name = firstname size="14">
-        <input type = "text" id = "lastname" ng-model="lastname" placeholder = "Last name" name = lastname size="14">
-        <p>DOB &nbsp;<input type = "date" id = "dob" ng-model="dob" name = dob size="1"</p>
-        <input type = "password" id = "newpass" ng-model="newpass" placeholder = "Password" name = "newpass" size="5">
+        <input type="text" id="newuser" ng-model="newuser" placeholder="Username" name="newuser" size="5" required>
+        <input type="password" id="newpass" ng-model="newpass" placeholder="Password" name="newpass" size="5" required>
         <span>
-          <input type ="text" id="city" ng-model="city" placeholder="City">
-          <select value="state" ng-model="state">
-            <option selected="selected">Select State</option>
-            <option>AL</option>
-            <option>AK</option>
-            <option>AS</option>
-            <option>AZ</option>
-            <option>AR</option>
-            <option>CA</option>
-            <option>CO</option>
-            <option>CT</option>
-            <option>DE</option>
-            <option>DC</option>
-            <option>FL</option>
-            <option>FL</option>
-            <option>GA</option>
-            <option>HI</option>
-            <option>ID</option>
-            <option>IL</option>
-            <option>IN</option>
-            <option>IA</option>
-            <option>KS</option>
-            <option>KY</option>
-            <option>LA</option>
-            <option>ME</option>
-            <option>MD</option>
-            <option>MA</option>
-            <option>MI</option>
-            <option>MN</option>
-            <option>MS</option>
-            <option>MO</option>
-            <option>MT</option>
-            <option>NE</option>
-            <option>NV</option>
-            <option>NH</option>
-            <option>NJ</option>
-            <option>NM</option>
-            <option>NY</option>
-            <option>NC</option>
-            <option>ND</option>
-            <option>OH</option>
-            <option>OK</option>
-            <option>OR</option>
-            <option>PA</option>
-            <option>RI</option>
-            <option>SC</option>
-            <option>SD</option>
-            <option>TN</option>
-            <option>TX</option>
-            <option>UT</option>
-            <option>VT</option>
-            <option>VA</option>
-            <option>WA</option>
-            <option>WV</option>
-            <option>WI</option>
-            <option>WY</option>
-           </select>
+        <input type ="text" id="city" ng-model="city" placeholder="City">
+        <select ng-model="selected_state" ng-options="state as state for state in states" required>
+        <option value="" style="color:#bbb !important; opacity:1.0;" disabled selected>State</option>
+        </select>
+        <input type ="text" id="zip" ng-model="zip" placeholder="zipcode">
+        <input type="date" id="dob" ng-model="dob" name=dob size="1" placeholder="Date of Birth"></input>
         </span>
-        <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!password" ng-disabled"!username">
+        <select ng-model="selected_party" ng-options="party as party for party in parties" required>
+        <option value="" style="color:#bbb !important; opacity:1.0;" disabled selected>Party Affiliation</option>
+        </select>
+        <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!(newpass&&newuser&&city&&selected_state&&zip&&dob)" ></input>
       </form>
    </div>
 

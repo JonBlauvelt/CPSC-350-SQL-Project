@@ -15,6 +15,8 @@ app.secret_key ='b9108e611bbcbfa1429a0fdc514f8210e9b3b483bfcd7fbb'
 #create socketio app - pass in the flask app created above
 socketio = SocketIO(app)
 
+###Local Functions###
+
 #connect to db function
 def connectToDB():
 
@@ -61,6 +63,12 @@ def verify_user(uname,pw):
         #debug
         print('login exception')
 
+#populate drop downs
+
+
+
+###Socketio###
+
 #socketio connection made
 @socketio.on('connect', namespace='/poll')
 def makeConnection():
@@ -74,6 +82,77 @@ def makeConnection():
 @socketio.on('disconnect', namespace='/poll')
 def test_disconnect():
     print('Client disconnected')
+
+#socketio get states
+@socketio.on('get_states', namespace='/poll')
+def get_states():
+    
+    print 'in getStates'
+
+    #connect to db
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    #construct query
+    query = 'SELECT state_abbrev FROM states;'
+
+    #execute it
+    try:
+        cur.execute(query)
+        states = cur.fetchall()
+
+        if(states):
+
+            #debug
+            print('retrieved states')
+
+            for state in states:
+
+                emit('state',state)
+
+    except:
+        #debug
+        print('exception retrieving states')
+
+
+#socketio get states
+@socketio.on('get_parties', namespace='/poll')
+def get_parties():
+    
+    print 'in get parties'
+
+    #connect to db
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    #construct query
+    query = 'SELECT parties FROM states;'
+
+    #execute it
+    try:
+        cur.execute(query)
+        states = cur.fetchall()
+
+        if(states):
+
+            #debug
+            print('retrieved states')
+
+            for party in parties:
+
+                emit('party',state)
+
+    except:
+        #debug
+        print('exception retrieving states')
+
+
+
+
+     
+
+
+### Flask app route###
 
 #logout
 @app.route('/logout')
