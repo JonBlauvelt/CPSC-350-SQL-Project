@@ -630,8 +630,8 @@
 
 		table tbody tr {
 			border: solid 1px rgba(144, 144, 144, 0.25);
-			border-left: 0;
-			border-right: 0;
+			border-left: 1;
+			border-right: 1;
 		}
 
 			table tbody tr:nth-child(2n + 1) {
@@ -647,7 +647,7 @@
 			font-size: 0.9em;
 			font-weight: 500;
 			padding: 0 0.75em 0.75em 0.75em;
-			text-align: left;
+			text-align: center;
 		}
 
 		table thead {

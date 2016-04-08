@@ -8,15 +8,23 @@ pollarizeApp.controller('appController', function($scope){
   var socket = io.connect(document.domain + ':' + location.port + '/poll');    
 
   //vars
-  $scope.username = '';
-  $scope.displayname = '';
+
+  //show/hide
   $scope.loggedin = false;
   $scope.showloginform = false;
   $scope.showreg=false;
+  $scope.show_main_header = true;
+  $scope.show_main_banner = true;
+  $scope.displayname = '';
   $scope.username = '';
   $scope.password = '';
+  $scope.show_trending_page = false;
+
+  //messages
   $scope.login_msg = 'Get on in Here.';
   $scope.reg_msg = "Let's Get Started.";
+
+  //reg form
   $scope.newpass = '';
   $scope.newuser = '';
   $scope.zip = '';
@@ -30,7 +38,7 @@ pollarizeApp.controller('appController', function($scope){
   $scope.ed_levs = [];
   $scope.incomes = [];
   $scope.profile = [];
-
+  $scope.elections = [];
 
   //local
 
@@ -90,6 +98,22 @@ pollarizeApp.controller('appController', function($scope){
     socket.emit('register', $scope.profile);
   };
 
+  $scope.goUsrDash = function(){
+    console.log('navigating to user dashboard');
+    $scope.show_main_banner = false;
+    $scope.show_trending_page = true;
+    socket.emit('get_elections');
+  };
+
+  $scope.reset_register = function(){
+    console.log('resetting reg form');
+    $scope.newuser='';
+    $scope.newpass='';
+    $scope.zip='';
+    $scope.dob='';
+    $scope.city='';
+  };
+
   //socket 
 
   socket.on('successful_login', function(uname){
@@ -97,7 +121,10 @@ pollarizeApp.controller('appController', function($scope){
     $scope.displayname = uname;
     $scope.loggedin = true;
     $scope.showloginform = false;
+    $scope.goUsrDash();
     console.log('showloginform = ' + $scope.showloginform);
+    console.log('show_main_banner = ' + $scope.show_main_banner);
+    console.log('show_main_header = ' + $scope.show_main_header);
     $scope.$apply();
   }); 
 
@@ -139,10 +166,21 @@ pollarizeApp.controller('appController', function($scope){
       $scope.goRegister();
     }else{
       $scope.showreg = false;
-      $scope.login_msg = "Registration Successful. C'mon in Neighbor!";
+      $scope.login_msg = "Registration Successful. \nC'mon in Neighbor!";
       $scope.showloginform = true;
       $scope.$apply();
     }
+  });
+
+  socket.on('failed_elec_retrieve', function(){
+    console.log('failed to load elections');
+    socket.emit('get_elections');
+  });
+
+  socket.on('election', function(election){
+    console.log('received election: ' + election);
+    $scope.elections.push(election);
+    $scope.$apply();
   });
 
 

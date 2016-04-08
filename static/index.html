@@ -26,9 +26,9 @@
 	</head>
 	<body id="top" ng-controller="appController">
 
-    
+  <!-- NOT LOGGED IN - LANDING PAGE -->    
 		<!-- Header -->
-			<header id="header" class="skel-layers-fixed">
+			<header id="header" class="skel-layers-fixed" ng-show="show_main_header">
         <h1><a href="/">POLLarize</a></h1>
         <nav id="nav">
 					<ul>
@@ -40,13 +40,13 @@
 			</header>	
 
       <!-- Banner -->
-			<section id="banner">
+			<section id="banner" ng-show="show_main_banner">
 				<div class="inner">
 					<h2>This is pollarize</h2>
 					<p>Cast your ballot.</a></p>
 					<ul class="actions">
-						<li><a href="" ng-click="goRegister()" class="button big special">Sign Up</a></li>
-						<li><a href="/" class="button big alt">Learn More</a></li>
+						<li><a href="" ng-click="goRegister()" class="button big special" ng-hide="loggedin">Sign Up</a></li>
+						<li><a href="/" class="button big alt" ng-hide="loggedin">Learn More</a></li>
 					</ul>
 				</div>
 			</section>
@@ -95,8 +95,40 @@
               zip && dob && selected_party && selected_ed_lev && selected_income)" ></input>
       </form>
    </div>
+ </div>
     <!-- end registration modal -->
-
+  <!-- END NOT LOGGED IN - LANDING PAGE -->    
+ <section id="main" class="wrapper style1" ng-show="show_trending_page">
+  <header class="major">
+    <h2>Trending Elections</h2>
+    <p>Vote and Track</p>
+  </header>
+  <div class="container">
+    <section class="special box" ng-repeat="election in elections">
+      <h3 ng-bind="election[0]"></h3>
+      <p ng-bind="election[1]"></p>
+			<div class="4u">					
+        <section class="special box">
+        <table>
+          <tr><th>Total Votes</th><th>Ayes</th><th>Nays</th></tr>
+          <tr><td ng-bind="election[2]"></td><td ng-bind="election[3]"></td><td ng-bind="election[4]"></td></tr>
+        </table>
+        <div class="row">
+          <div class="6u">
+            <input type="button" value="Aye"></input>
+          </div>
+          <div class="6u">
+            <input type=button value="Nay"></input>
+          </div>
+      </section>
+			<div class="6u">					
+      </div>
+      </div>
+      </div>
+    </section>
+  </div>
+</section>
+ 
 		<!-- Footer -->
 			<footer id="footer">
 				<ul class="copyright">

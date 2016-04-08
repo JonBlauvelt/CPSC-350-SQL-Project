@@ -21,20 +21,9 @@ CREATE TABLE parties(
 DROP TABLE IF EXISTS elections;
 CREATE TABLE elections(
   election_id SERIAL NOT NULL,
-  office TEXT NOT NULL DEFAULT '',
-  election_date date NOT NULL DEFAULT current_date,
+  title TEXT NOT NULL DEFAULT '',
+  descr TEXT NOT NULL DEFAULT '',
   PRIMARY KEY (election_id)   
-);
-
---candidate table
---to do?
-
--- vote table
-DROP TABLE IF EXISTS votes;
-CREATE TABLE votes (
-  vote_id SERIAL NOT NULL,
-  user_id INTEGER NOT NULL, --ADD REFERENCE HERE
-  PRIMARY KEY (vote_id)
 );
 
 -- states table (not strictly necessary)
@@ -77,6 +66,17 @@ CREATE TABLE users(
     ed_lev_id INTEGER REFERENCES ed_levs(ed_lev_id),
     PRIMARY KEY(user_id)
 );
+
+-- vote table
+DROP TABLE IF EXISTS votes;
+CREATE TABLE votes(
+  vote_id SERIAL NOT NULL,
+  user_id INTEGER  REFERENCES users(user_id),
+  vote INTEGER NOT NULL,
+  election_id INTEGER REFERENCES elections(election_id),
+  PRIMARY KEY (vote_id)
+);
+
 
 
 -- state table entries
@@ -194,7 +194,6 @@ INSERT INTO incomes(income) VALUES('15,000 - 24,999');
 INSERT INTO incomes(income) VALUES('25,000 - 34,999');
 INSERT INTO incomes(income) VALUES('35,000 - 49,999');
 INSERT INTO incomes(income) VALUES('50,000 - 74,999');
-INSERT INTO incomes(income) VALUES('50,000 - 74,999');
 INSERT INTO incomes(income) VALUES('75,000 - 99,999');
 INSERT INTO incomes(income) VALUES('100,000 - 124,999');
 INSERT INTO incomes(income) VALUES('125,000 - 149,999');
@@ -203,9 +202,10 @@ INSERT INTO incomes(income) VALUES('175,000 - 199,999');
 INSERT INTO incomes(income) VALUES('200,000 and over');
 
 --system user - test
-
 INSERT INTO users (username,password) VALUES('flohnson',crypt('pee', gen_salt('bf')));
 
+--election - test
+INSERT INTO elections(title, descr) VALUES ('Big Bird for Mayor', 'Should the large yellow bird be the mayor of America''s favorite street?');
 
 --db user
 CREATE USER pollster WITH PASSWORD 'hucklebucklebeanstalk123!!';
@@ -214,8 +214,12 @@ GRANT ALL PRIVILEGES ON states TO pollster;
 GRANT ALL PRIVILEGES ON parties TO pollster;
 GRANT ALL PRIVILEGES ON ed_levs TO pollster;
 GRANT ALL PRIVILEGES ON incomes TO pollster;
+GRANT ALL PRIVILEGES ON elections TO pollster;
+GRANT ALL PRIVILEGES ON votes TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE users_user_id_seq TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE states_state_id_seq TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE parties_party_id_seq TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE ed_levs_ed_lev_id_seq TO pollster;
 GRANT ALL PRIVILEGES ON SEQUENCE incomes_income_id_seq TO pollster;
+GRANT ALL PRIVILEGES ON SEQUENCE elections_election_id_seq TO pollster;
+GRANT ALL PRIVILEGES ON SEQUENCE votes_vote_id_seq TO pollster;

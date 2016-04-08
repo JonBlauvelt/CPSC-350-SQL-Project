@@ -113,6 +113,12 @@ def makeConnection():
     if('logged_in' in session):
         print 'validating login'
         emit('successful_login', session['name'])
+   #else:
+   #   populate_dropdown("states")
+   #   populate_dropdown("incomes")
+   #   populate_dropdown("ed_levs")
+   #   populate_dropdown("parties")
+
 
 #socketio client disconnected
 @socketio.on('disconnect', namespace='/poll')
@@ -166,10 +172,10 @@ def register_new_user(user_data):
     "(username, password, zip, dob, city, state_id, ed_lev_id, "+\
     "income_id, party_id) VALUES (%s,crypt(%s, gen_salt('bf')), "+\
     "%s,%s,%s,(SELECT state_id FROM states WHERE state_abbrev = %s), "+\
-    "(SELECT ed_lev_id FROM ed_levs WHERE ed_lev = %s), "+\
-    "(SELECT income_id FROM incomes WHERE income = %s), "+\
+    "(SELECT ed_lev_id FROM ed_levs WHERE ed_lev = %s LIMIT 1), "+\
+    "(SELECT income_id FROM incomes WHERE income = %s LIMIT 1), "+\
     "(SELECT party_id FROM parties WHERE party_name = SUBSTRING(%s FROM "+\
-    "0 FOR POSITION(" + party_separater + " IN  %s))));"
+    "0 FOR POSITION(" + party_separater + " IN  %s)) LIMIT 1));"
 
     print(query)
 
@@ -180,6 +186,7 @@ def register_new_user(user_data):
     try:
         # insert new user
         query = cur.mogrify(query, tuple(user_data))
+        print(query)
         cur.execute(query)
 
     except:
@@ -198,7 +205,45 @@ def register_new_user(user_data):
     #emit
     emit('registration_complete', failed)
 
+#socket request for trending elections
+@socketio.on('get_elections', namespace='/poll')
+def get_elections():
 
+    #debug
+    print 'retrieving elections'
+
+    #build query
+    query = 'SELECT title, descr, COUNT(*) as total_votes, '+\
+            'SUM(vote) as ayes,(COUNT(*) - SUM(vote)) as nays '+\
+            'FROM elections NATURAL JOIN votes '+\
+            'GROUP BY election_id ORDER BY '+\
+            'total_votes DESC LIMIT 20;'
+    
+    #connect
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    try:
+        # execute query
+        cur.execute(query)
+        elections = cur.fetchall();
+        if(elections):
+            for election in elections:
+
+                #debug
+                print ('election: ' +str(election))
+
+                #emit
+                emit('election', election)
+
+    except:
+        #debug
+        print 'failed to get elections'
+        
+        #tell the client
+        emit('failed_elec_retrieve')
+        
+    
 ### Flask app route###
 
 #logout
