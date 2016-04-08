@@ -114,6 +114,11 @@ pollarizeApp.controller('appController', function($scope){
     $scope.city='';
   };
 
+  $scope.vote = function(choice,election){
+    console.log('choice: ' + choice + ' election: ' + election);
+
+  };
+
   //socket 
 
   socket.on('successful_login', function(uname){
@@ -182,7 +187,5 @@ pollarizeApp.controller('appController', function($scope){
     $scope.elections.push(election);
     $scope.$apply();
   });
-
-
 
 });//end controller
