@@ -23,6 +23,7 @@ pollarizeApp.controller('appController', function($scope){
   //messages
   $scope.login_msg = 'Get on in Here.';
   $scope.reg_msg = "Let's Get Started.";
+  $scope.vote_buttons = ['aye','nay','aye'];
 
   //reg form
   $scope.newpass = '';

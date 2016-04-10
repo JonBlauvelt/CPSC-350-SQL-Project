@@ -110,15 +110,15 @@
 			<div class="4u">					
         <section class="special box">
         <table>
-          <tr><th>Total Votes</th><th>Ayes</th><th>Nays</th></tr>
-          <tr><td ng-bind="election[2]"></td><td ng-bind="election[3]"></td><td ng-bind="election[4]"></td></tr>
+          <tr><th>Ayes</th><th>Nays</th><th>Total Votes</th></tr>
+          <tr></td><td ng-bind="election[3]"></td><td ng-bind="election[4]"></td><td ng-bind="election[2]"></tr>
         </table>
         <div class="row">
           <div class="6u">
-            <input type="button" value="Aye" ng-click="vote(1,election[0])"></input>
+            <input type="button" ng-value="vote_buttons[election[7]]" ng-click="vote(1,election[5])"></input>
           </div>
           <div class="6u">
-            <input type=button value="Nay" ng-click="vote(0,election[0])"></input>
+            <input type=button value="Nay" ng-click="vote(0,election[5])" ng-hide="election[6]"></input>
           </div>
       </section>
 			<div class="6u">					

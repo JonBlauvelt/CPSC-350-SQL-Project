@@ -209,40 +209,52 @@ def register_new_user(user_data):
 @socketio.on('get_elections', namespace='/poll')
 def get_elections():
 
-    #debug
-    print 'retrieving elections'
+    if 'logged_in' in session:
 
-    #build query
-    query = 'SELECT title, descr, COUNT(*) as total_votes, '+\
-            'SUM(vote) as ayes,(COUNT(*) - SUM(vote)) as nays '+\
-            'FROM elections NATURAL JOIN votes '+\
-            'GROUP BY election_id ORDER BY '+\
-            'total_votes DESC LIMIT 20;'
-    
-    #connect
-    conn = connectToDB()
-    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-    try:
-        # execute query
-        cur.execute(query)
-        elections = cur.fetchall();
-        if(elections):
-            for election in elections:
-
-                #debug
-                print ('election: ' +str(election))
-
-                #emit
-                emit('election', election)
-
-    except:
         #debug
-        print 'failed to get elections'
+        print 'retrieving elections'
+
+        #build query
+        query = 'SELECT title, descr, COUNT(*) AS total_votes, '+\
+                'SUM(vote) AS '+\
+                'ayes,(COUNT(*) - SUM(vote)) AS nays, election_id, '+\
+                'SUM(CASE WHEN user_id = %s THEN 1 ELSE 0 END) AS voted, '+\
+                "SUM(CASE WHEN user_id = %s AND vote = '1' THEN 1 "+\
+                'ELSE 0 END) AS vote FROM elections '+\
+                'NATURAL JOIN votes GROUP BY election_id '+\
+                'ORDER BY total_votes DESC LIMIT 20;'
         
-        #tell the client
-        emit('failed_elec_retrieve')
-        
+        #connect
+        conn = connectToDB()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            # execute query
+            query = cur.mogrify(query,(session['id'],session['id']))
+            print query
+            cur.execute(query)
+            elections = cur.fetchall();
+            if(elections):
+                for election in elections: 
+                    #get none
+                    if(election['vote'] is None):
+                        election['vote'] = 2
+
+                    #debug
+                    print ('election: ' +str(election))
+
+                    #emit
+                    emit('election', election)
+
+        except:
+            #debug
+            print 'failed to get elections'
+            
+            #tell the client
+            emit('failed_elec_retrieve')
+            
+    else:
+        return redirect(url_for('mainIndex'))
     
 ### Flask app route###
 

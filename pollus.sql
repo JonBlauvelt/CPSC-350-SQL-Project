@@ -202,10 +202,60 @@ INSERT INTO incomes(income) VALUES('175,000 - 199,999');
 INSERT INTO incomes(income) VALUES('200,000 and over');
 
 --system user - test
-INSERT INTO users (username,password) VALUES('flohnson',crypt('pee', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('flohnson',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('jim',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('marvin',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('bob',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('ned',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('phil',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('sandwich',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('boutros',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('ghali',crypt('fjf', gen_salt('bf')));
+INSERT INTO users (username,password) VALUES('sacajawea',crypt('fjf', gen_salt('bf')));
 
 --election - test
 INSERT INTO elections(title, descr) VALUES ('Big Bird for Mayor', 'Should the large yellow bird be the mayor of America''s favorite street?');
+INSERT INTO elections(title, descr) VALUES ('Is this a question?', 'well?');
+INSERT INTO elections(title, descr) VALUES ('Proposition 3', 'Are you voting against it?');
+INSERT INTO elections(title, descr) VALUES ('This is a test of the emergency vote casting system.', 'If it were not a test, it would be posed as a binary question');
+
+--vote - test
+INSERT INTO votes(user_id, vote, election_id) VALUES (1,0,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (2,1,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (3,0,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (4,1,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (5,0,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (6,1,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (7,0,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (8,1,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (9,0,1);
+INSERT INTO votes(user_id, vote, election_id) VALUES (1,1,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (2,0,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (3,1,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (4,0,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (5,1,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (6,0,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (7,1,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (8,0,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (9,1,2);
+INSERT INTO votes(user_id, vote, election_id) VALUES (1,0,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (2,1,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (3,0,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (4,1,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (5,0,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (6,1,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (7,0,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (8,1,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (9,0,3);
+INSERT INTO votes(user_id, vote, election_id) VALUES (1,0,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (2,1,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (3,0,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (4,1,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (5,0,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (6,1,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (7,0,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (8,1,4);
+INSERT INTO votes(user_id, vote, election_id) VALUES (9,0,4);
 
 --db user
 CREATE USER pollster WITH PASSWORD 'hucklebucklebeanstalk123!!';
