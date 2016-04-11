@@ -24,7 +24,8 @@ pollarizeApp.controller('appController', function($scope){
   $scope.login_msg = 'Get on in Here.';
   $scope.reg_msg = "Let's Get Started.";
   $scope.vote_buttons = ['aye','nay','aye'];
-
+  $scope.vote_status = ['You have NOT yet voted!','You have voted and your current vote is: ']
+  $scope.vote_instructions = ['Vote now:', 'Change your vote:'] 
   //reg form
   $scope.newpass = '';
   $scope.newuser = '';
@@ -115,9 +116,9 @@ pollarizeApp.controller('appController', function($scope){
     $scope.city='';
   };
 
-  $scope.vote = function(choice,election){
-    console.log('choice: ' + choice + ' election: ' + election);
-
+  $scope.vote = function(choice,election,isNew){
+    console.log(choice + ',' + election + ',' + isNew);
+    socket.emit('vote',choice,election,isNew); 
   };
 
   //socket 
@@ -186,6 +187,12 @@ pollarizeApp.controller('appController', function($scope){
   socket.on('election', function(election){
     console.log('received election: ' + election);
     $scope.elections.push(election);
+    $scope.$apply();
+  });
+
+  socket.on('clear_elections', function(election){
+    console.log('clearing elections');
+    $scope.elections = [];
     $scope.$apply();
   });
 

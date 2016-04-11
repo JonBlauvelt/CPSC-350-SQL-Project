@@ -208,6 +208,9 @@ def register_new_user(user_data):
 #socket request for trending elections
 @socketio.on('get_elections', namespace='/poll')
 def get_elections():
+    send_elections()
+
+def send_elections():
 
     if 'logged_in' in session:
 
@@ -255,7 +258,46 @@ def get_elections():
             
     else:
         return redirect(url_for('mainIndex'))
-    
+
+#socket request to cast vote
+@socketio.on('vote', namespace='/poll')
+def vote(vote,election,isNew):
+
+    #track failure
+    failed = False
+
+    #did this user already vote?
+    if(isNew):
+       #update
+       query = 'UPDATE votes SET vote = %s WHERE user_id = %s AND '+\
+               'election_id = %s;'
+    else:
+       query = 'INSERT INTO votes (vote, user_id, election_id) '+\
+               'VALUES (%s,%s,%s);'
+
+    try:
+        #connect
+        conn = connectToDB()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        #execute query
+        query = cur.mogrify(query, (vote,session['id'],election))
+        print query
+        cur.execute(query)
+
+    except:
+        failed = True
+        conn.rollback() 
+        print 'vote failed'
+
+    conn.commit()
+
+    #refresh the elections in view if it worked
+    if not failed:
+        emit('clear_elections')
+        send_elections()
+        
+
 ### Flask app route###
 
 #logout
