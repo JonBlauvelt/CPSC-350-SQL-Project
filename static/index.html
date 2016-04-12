@@ -100,37 +100,49 @@
   <!-- END NOT LOGGED IN - LANDING PAGE -->    
  <div id="trending_page" ng-show="show_trending_page">
   <header class="major">
-    <h2>Trending Elections</h2>
-    <p>Vote and Track</p>
+		<section id="obanner">
+				<div class="inner">
+          <h2>Trending Elections</h2>
+          <p>Vote and Track</p>
+				</div>
+			</section>
   </header>
   <div class="container">
-    <section class="special box" ng-repeat="election in elections">
-      <h3 ng-bind="election[0]"></h3>
-      <p ng-bind="election[1]"></p>
+    <section ng-repeat="election in elections" class="wrapper style1">
+        <section class="special box">
+      <header class="major">
+       <h3 ng-bind="election[0]"></h3>
+       <p ng-bind="election[1]"></p>
+      </header>
       <div class="row">
-			<div class="4u">					
-        <section >
+			 <div class="4u">					
+        <section class="special box" style="height: 280px; important!;">
           <table>
             <tr><th>Ayes</th><th>Nays</th><th>Total Votes</th></tr>
-            <tr></td><td ng-bind="election[3]"></td><td ng-bind="election[4]"></td><td ng-bind="election[2]"></tr>
+            <tr><td ng-bind="election[3]"></td><td ng-bind="election[4]"></td><td ng-bind="election[2]"></td></tr>
           </table>
+          <i ng-show="election[3] > election[4]"> The ayes have it. </i>
+          <i ng-show="election[3] < election[4]"> The nays have it. </i>
+          <i ng-show="election[3] == election[4]"> Too close to call. </i>
         </section>
       </div>
 			<div class="4u">					
-        <section class="special box" >
-          <p ><span ng-bind="vote_status[election[6]]"></span><span ng-show="election[6]" ng-bind="vote_buttons[1-election[7]]"></span></p>
-          <p ng-bind="vote_instructions[election[6]]"></p>
-          <div class="row">
-            <div >
+        <section class="special box" style="height: 280px; important!;">
+          <h4><span ng-bind="vote_status[election[6]]"></span><b ng-show="election[6]" ng-bind="vote_buttons[1-election[7]]"></b></h4>
+          <p><span ng-bind="vote_instructions[election[6]]"></span></p>
               <input type="button" ng-value="vote_buttons[election[7]]" ng-click="vote((1-election[7]),election[5],election[6])"></input>
-            </div>
-            <div >
               <input type=button value="Nay" ng-click="vote(0,election[5],election[6])" ng-hide="election[6]"></input>
-            </div>
-          </div>
+          </Br>
         </section>
       </div>
-    </div>
+			<div class="4u">					
+        <section class="special box" style="height: 280px; important!;">
+          <h5>Track votes by demographic</h5>
+          <Br/>
+          <i class="icon fa-area-chart major"></i>
+        </section>
+      </div>
+    </section>
     </section>
   </div>
 </div>

@@ -113,11 +113,6 @@ def makeConnection():
     if('logged_in' in session):
         print 'validating login'
         emit('successful_login', session['name'])
-   #else:
-   #   populate_dropdown("states")
-   #   populate_dropdown("incomes")
-   #   populate_dropdown("ed_levs")
-   #   populate_dropdown("parties")
 
 
 #socketio client disconnected

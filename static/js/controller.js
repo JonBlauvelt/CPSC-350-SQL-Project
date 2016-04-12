@@ -24,8 +24,8 @@ pollarizeApp.controller('appController', function($scope){
   $scope.login_msg = 'Get on in Here.';
   $scope.reg_msg = "Let's Get Started.";
   $scope.vote_buttons = ['aye','nay','aye'];
-  $scope.vote_status = ['You have NOT yet voted!','You have voted and your current vote is: ']
-  $scope.vote_instructions = ['Vote now:', 'Change your vote:'] 
+  $scope.vote_status = ['You have NOT yet voted!','You have voted ']
+  $scope.vote_instructions = ['Vote now:', 'Change vote:'] 
   //reg form
   $scope.newpass = '';
   $scope.newuser = '';
@@ -137,6 +137,7 @@ pollarizeApp.controller('appController', function($scope){
 
   socket.on('failed_login', function(){
     console.log('failed login');
+    $scope.showloginform = true;
     $scope.login_msg = "That's not quite right.";
     $scope.$apply();
   });
@@ -195,5 +196,6 @@ pollarizeApp.controller('appController', function($scope){
     $scope.elections = [];
     $scope.$apply();
   });
+
 
 });//end controller

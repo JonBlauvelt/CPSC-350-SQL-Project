@@ -215,7 +215,7 @@ INSERT INTO users (username,password) VALUES('sacajawea',crypt('fjf', gen_salt('
 
 --election - test
 INSERT INTO elections(title, descr) VALUES ('Big Bird for Mayor', 'Should the large yellow bird be the mayor of America''s favorite street?');
-INSERT INTO elections(title, descr) VALUES ('Is this a question?', 'well?');
+INSERT INTO elections(title, descr) VALUES ('Is this a question', 'well?');
 INSERT INTO elections(title, descr) VALUES ('Proposition 3', 'Are you voting against it?');
 INSERT INTO elections(title, descr) VALUES ('This is a test of the emergency vote casting system.', 'If it were not a test, it would be posed as a binary question');
 
