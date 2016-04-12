@@ -32,8 +32,10 @@
         <h1><a href="/">POLLarize</a></h1>
         <nav id="nav">
 					<ul>
-						<li><a href="/">Home</a></li>
-						<li><a href="" id="headerLoginButton" ng-hide="loggedin" ng-click="gotoLogin()" class="button special">Login</a></li>
+						<li><a href="" ng-show="loggedin" ng-click="goHome()">Home</a></li>
+						<li><a href="" ng-show="loggedin" ng-click="gotoTrending()">Trending</a></li>
+						<li><a href="" ng-show="loggedin" ng-click="gotoDash()">Dashboard</a></li>
+						<li><a href="" ng-hide="loggedin" ng-click="gotoLogin()" class="button special">Login</a></li>
             <li><a href="/logout" id="logoutLink" ng-show="loggedin">Welcome {{displayname}}, logout?</a></li>
 					</ul>
 				</nav>
@@ -46,17 +48,25 @@
 					<p>Cast your ballot.</a></p>
 					<ul class="actions">
 						<li><a href="" ng-click="goRegister()" class="button big special" ng-hide="loggedin">Sign Up</a></li>
-						<li><a href="/" class="button big alt" ng-hide="loggedin">Learn More</a></li>
+						<li><a href="/" class="button big alt">Learn More</a></li>
 					</ul>
 				</div>
 			</section>
+
+      <!-- About -->
+      <section id="about" ng-show="showAbout">
+        <h1> 
+      </section> 
+
 
 
     <!-- begin login modal -->
     <div id="modalbackdrop" class="modal" ng-show="showloginform">
     <div id="login" class="modal-content" >
+      <form method="post" action="/logout">
       <div class=pull-right><button type="close_button" class="close" style="border:none; background:none;" aria-label="Close" ng-click="exit()">
           <span aria-hidden="true"><font size="5">&times;</font></span></button></div>
+      </form>
       <form method="post" action="/login">
         <h3 ng-bind="login_msg"></h3>
         <input type = "text" id = "username" ng-model="username" placeholder = "Username" name = username size="5"></input>
@@ -78,18 +88,18 @@
         <input type="password" id="newpass" ng-model="newpass" placeholder="Password" name="newpass" size="5" required>
         <input type ="text" id="city" ng-model="city" placeholder="City">
         <select ng-model="selected_state" ng-options="state as state for state in states" required>
-          <option value="" style="color:#bbb !important; opacity:1.0;" disabled selected>State</option>
+          <option value="" style="color:#bbb; !important; opacity:1.0;" disabled selected>State</option>
         </select>
         <input type ="text" id="zip" ng-model="zip" placeholder="Zipcode">
         <input type="date" id="dob" ng-model="dob" name=dob size="1" placeholder="Date of Birth"></input>
         <select ng-model="selected_party" ng-options="party as party for party in parties" required>
-          <option value="" style="color:#bbb !important; opacity:1.0;" disabled selected>Party Affiliation</option>
+          <option value="" style="color:#bbb; opacity:1.0; !important; " disabled selected>Party Affiliation</option>
         </select>
         <select ng-model="selected_ed_lev" ng-options="ed_lev as ed_lev for ed_lev in ed_levs" required>
-          <option value="" style="color:#bbb !important; opacity:1.0;" disabled selected>Highest Level of Education Completed</option>
+          <option value="" style="color:#d3d3d3 !important;" disabled selected>Highest Level of Education Completed</option>
         </select>
         <select ng-model="selected_income" ng-options="income as income for income in incomes" required>
-          <option value="" style="color:#CACACA !important; opacity:1.0;" disabled selected>Annual Income Level</option>
+          <option value="" style="color:#CACACA; !important; opacity:1.0;" disabled selected>Annual Income Level</option>
         </select>
         <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!(newpass && newuser && city && selected_state && 
               zip && dob && selected_party && selected_ed_lev && selected_income)" ></input>
@@ -108,7 +118,7 @@
 			</section>
   </header>
   <div class="container">
-    <section ng-repeat="election in elections" class="wrapper style1">
+    <section ng-repeat="election in elections" class="wrapper style1" id="election{{election[5]}}">
         <section class="special box">
       <header class="major">
        <h3 ng-bind="election[0]"></h3>
@@ -139,7 +149,7 @@
         <section class="special box" style="height: 280px; important!;">
           <h5>Track votes by demographic</h5>
           <Br/>
-          <i class="icon fa-area-chart major"></i>
+          <a href=""><i class="icon fa-area-chart major"></i><a>
         </section>
       </div>
     </section>

@@ -15,6 +15,9 @@ app.secret_key ='b9108e611bbcbfa1429a0fdc514f8210e9b3b483bfcd7fbb'
 #create socketio app - pass in the flask app created above
 socketio = SocketIO(app)
 
+#local var to store failed logins
+failed_login = []
+
 ###Local Functions###
 
 #connect to db function
@@ -111,8 +114,18 @@ def makeConnection():
     print('connected')
 
     if('logged_in' in session):
-        print 'validating login'
-        emit('successful_login', session['name'])
+        if session['logged_in']:
+            print 'validated login'
+            emit('successful_login', session['name'])
+        else:
+            print 'previous failed login'
+            emit('failed_login')
+    else:
+        populate_dropdown('states')
+        populate_dropdown('incomes')
+        populate_dropdown('parties')
+        populate_dropdown('ed_levs')
+
 
 
 #socketio client disconnected
@@ -291,12 +304,14 @@ def vote(vote,election,isNew):
     if not failed:
         emit('clear_elections')
         send_elections()
+        emit('scroll', election)
+        print 'emitted scroll'
         
 
 ### Flask app route###
 
 #logout
-@app.route('/logout')
+@app.route('/logout', methods=['GET','POST'])
 def logout():
     session.clear()
     return redirect(url_for('mainIndex'))
@@ -322,6 +337,7 @@ def login():
         print('successful_login')
         
     else:
+        session['logged_in'] = False
         print('failed_login')
 
     return redirect(url_for('mainIndex'))

@@ -2,7 +2,7 @@
 var pollarizeApp = angular.module('pollarizeApp', []);
 
 //Create controller
-pollarizeApp.controller('appController', function($scope){
+pollarizeApp.controller('appController', function($scope, $location, $anchorScroll){
 
   //make connection back to flask app
   var socket = io.connect(document.domain + ':' + location.port + '/poll');    
@@ -100,11 +100,21 @@ pollarizeApp.controller('appController', function($scope){
     socket.emit('register', $scope.profile);
   };
 
-  $scope.goUsrDash = function(){
-    console.log('navigating to user dashboard');
+  $scope.gotoTrending = function(){
+    console.log('navigating to trending polls page');
     $scope.show_main_banner = false;
     $scope.show_trending_page = true;
     socket.emit('get_elections');
+  };
+
+  $scope.gotoDash = function(){
+    console.log('nothing here yet'); 
+  };
+
+  $scope.goHome = function(){
+    console.log('going home'); 
+    $scope.show_main_banner = true;
+    $scope.show_trending_page = false;
   };
 
   $scope.reset_register = function(){
@@ -121,6 +131,7 @@ pollarizeApp.controller('appController', function($scope){
     socket.emit('vote',choice,election,isNew); 
   };
 
+
   //socket 
 
   socket.on('successful_login', function(uname){
@@ -128,7 +139,7 @@ pollarizeApp.controller('appController', function($scope){
     $scope.displayname = uname;
     $scope.loggedin = true;
     $scope.showloginform = false;
-    $scope.goUsrDash();
+    $scope.gotoTrending();
     console.log('showloginform = ' + $scope.showloginform);
     console.log('show_main_banner = ' + $scope.show_main_banner);
     console.log('show_main_header = ' + $scope.show_main_header);
@@ -138,6 +149,7 @@ pollarizeApp.controller('appController', function($scope){
   socket.on('failed_login', function(){
     console.log('failed login');
     $scope.showloginform = true;
+    $scope.loggedin = false;
     $scope.login_msg = "That's not quite right.";
     $scope.$apply();
   });
@@ -194,6 +206,13 @@ pollarizeApp.controller('appController', function($scope){
   socket.on('clear_elections', function(election){
     console.log('clearing elections');
     $scope.elections = [];
+    $scope.$apply();
+  });
+
+  socket.on('scroll', function(id){
+    console.log('scrolling to ' + id);
+    $location.hash('election'+id);
+    $anchorScroll();
     $scope.$apply();
   });
 

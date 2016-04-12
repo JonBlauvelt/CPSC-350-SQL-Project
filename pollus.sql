@@ -183,7 +183,7 @@ INSERT INTO ed_levs (ed_lev) VALUES ('Associate''s or Technical Degree');
 INSERT INTO ed_levs (ed_lev) VALUES ('Bachelor''s Degree');
 INSERT INTO ed_levs (ed_lev) VALUES ('Master''s Degree');
 INSERT INTO ed_levs (ed_lev) VALUES ('Proffessional Degree(such as DDS or JD');
-INSERT INTO ed_levs (ed_lev) VALUES ('Doctorate (such as PhD or EdD');
+INSERT INTO ed_levs (ed_lev) VALUES ('Doctorate (such as PhD or EdD)');
 
 --education level inserts
 INSERT INTO incomes(income) VALUES ('0');
