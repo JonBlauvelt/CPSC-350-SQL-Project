@@ -19,6 +19,10 @@ pollarizeApp.controller('appController', function($scope, $location, $anchorScro
   $scope.username = '';
   $scope.password = '';
   $scope.show_trending_page = false;
+  $scope.dob_activate = false;
+  $scope.party_active = false;
+  $scope.ed_lev_active = false;
+  $scope.state_active = false;
 
   //messages
   $scope.login_msg = 'Get on in Here.';
@@ -26,6 +30,7 @@ pollarizeApp.controller('appController', function($scope, $location, $anchorScro
   $scope.vote_buttons = ['aye','nay','aye'];
   $scope.vote_status = ['You have NOT yet voted!','You have voted ']
   $scope.vote_instructions = ['Vote now:', 'Change vote:'] 
+
   //reg form
   $scope.newpass = '';
   $scope.newuser = '';
@@ -131,6 +136,22 @@ pollarizeApp.controller('appController', function($scope, $location, $anchorScro
     socket.emit('vote',choice,election,isNew); 
   };
 
+    $scope.shiftFocus = function(id){
+    console.log('shifting focus to ' + id);
+    if(id == 'state'){
+      $scope.state_active = true;
+    }else if(id == 'dob'){
+      $scope.dob_active = true;
+    }else if(id=='party'){
+      $scope.party_active=true;
+    }else if(id=='ed'){
+      $scope.ed_lev_active=true;
+    }else if(id=='income'){
+      $scope.income_active=true;
+    }
+    var elem = document.getElementById(id);
+    window.setTimeout(function(){elem.focus();}, 100);
+  };
 
   //socket 
 

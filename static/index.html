@@ -33,8 +33,8 @@
         <nav id="nav">
 					<ul>
 						<li><a href="" ng-show="loggedin" ng-click="goHome()">Home</a></li>
-						<li><a href="" ng-show="loggedin" ng-click="gotoTrending()">Trending</a></li>
 						<li><a href="" ng-show="loggedin" ng-click="gotoDash()">Dashboard</a></li>
+						<li><a href="" ng-show="loggedin" ng-click="gotoTrending()">Trending</a></li>
 						<li><a href="" ng-hide="loggedin" ng-click="gotoLogin()" class="button special">Login</a></li>
             <li><a href="/logout" id="logoutLink" ng-show="loggedin">Welcome {{displayname}}, logout?</a></li>
 					</ul>
@@ -87,19 +87,34 @@
         <input type="text" id="newuser" ng-model="newuser" placeholder="Username" name="newuser" size="5" required>
         <input type="password" id="newpass" ng-model="newpass" placeholder="Password" name="newpass" size="5" required>
         <input type ="text" id="city" ng-model="city" placeholder="City">
-        <select ng-model="selected_state" ng-options="state as state for state in states" required>
-          <option value="" style="color:#bbb; !important; opacity:1.0;" disabled selected>State</option>
+        <input type="text" placeholder="State" ng-mouseenter="state_active=true" ng-hide="state_active" ng-focus="shiftFocus('state')"></input>
+        <select id="state" ng-model="selected_state" ng-options="state as state for state in states" ng-blur="state_active=false" 
+            required ng-mouseleave="state_active=false" ng-show="state_active">
+          <option value="" disabled selected>State</option>
         </select>
-        <input type ="text" id="zip" ng-model="zip" placeholder="Zipcode">
-        <input type="date" id="dob" ng-model="dob" name=dob size="1" placeholder="Date of Birth"></input>
-        <select ng-model="selected_party" ng-options="party as party for party in parties" required>
-          <option value="" style="color:#bbb; opacity:1.0; !important; " disabled selected>Party Affiliation</option>
+        <input type ="text" id="zip" ng-model="zip" placeholder="Zipcode"></input>
+        <input type ="text" placeholder="Date of Birth" ng-hide="dob_active" ng-mouseenter="dob_active=true" 
+           ng-focus="shiftFocus('dob')"></input>
+        <input type="date" id="dob" ng-model="dob" name="dob" ng-show="dob_active" ng-blur="dob_active=false" 
+           ng-mouseleave="dob_active=false"></input>
+        <input type ="text" id="party_placeholder" placeholder="Party Affiliation"   ng-mouseenter="party_active=true" 
+           ng-hide="party_active" ng-focus="shiftFocus('party')">
+        </input>
+        <select id="party" ng-model="selected_party" ng-options="party as party for party in parties" required ng-show="party_active" 
+          ng-mouseleave="party_active=false" ng-blur="party_active=false">
+          <option value=""  disabled selected>Party Affiliation</option>
         </select>
-        <select ng-model="selected_ed_lev" ng-options="ed_lev as ed_lev for ed_lev in ed_levs" required>
-          <option value="" style="color:#d3d3d3 !important;" disabled selected>Highest Level of Education Completed</option>
+        <input type="text" ng-hide="ed_lev_active" placeholder="Highest Level of Education Completed" ng-mouseenter="ed_lev_active=true" 
+          ng-focus="shiftFocus('ed')"></input>
+        <select id="ed" ng-model="selected_ed_lev" ng-options="ed_lev as ed_lev for ed_lev in ed_levs" ng-show="ed_lev_active" 
+          ng-mouseleave="ed_lev_active=false" required ng-blur="ed_lev_active=false">
+          <option value="" disabled selected>Highest Level of Education Completed</option>
         </select>
-        <select ng-model="selected_income" ng-options="income as income for income in incomes" required>
-          <option value="" style="color:#CACACA; !important; opacity:1.0;" disabled selected>Annual Income Level</option>
+        <input type="text" placeholder="Annual Income Level" ng-hide="income_active" ng-mouseenter="income_active=true" 
+          ng-focus="shiftFocus('income')">
+        <select id="income" ng-model="selected_income" ng-options="income as income for income in incomes" required ng-show="income_active" 
+          ng-mouseleave="income_active=false" ng-blur="income_active=false">
+          <option value="" disabled selected>Annual Income Level</option>
         </select>
         <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!(newpass && newuser && city && selected_state && 
               zip && dob && selected_party && selected_ed_lev && selected_income)" ></input>
