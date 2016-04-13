@@ -117,7 +117,7 @@
           <option value="" disabled selected>Annual Income Level</option>
         </select>
         <input type = "submit" id = "reg_submit" value = "register" ng-disabled="!(newpass && newuser && city && selected_state && 
-              zip && dob && selected_party && selected_ed_lev && selected_income)" ></input>
+              zip && dob && selected_party && selected_ed_lev && selected_income&&(zip.length==5))" ></input>
       </form>
    </div>
  </div>
