@@ -53,31 +53,34 @@ pollarizeApp.controller('appController', function($scope, $location, $anchorScro
     console.log("requesting states from server");
     $scope.states = [];
     socket.emit("get_states");
-  }
+  };
 
   $scope.get_ed_levs = function(){
     console.log("requesting education levels from server");
     $scope.ed_levs = [];
     socket.emit("get_ed_levs");
-  }
+  };
 
   $scope.get_parties = function(){
     console.log("requesting parties from server");
     $scope.parties = [];
     socket.emit("get_parties");
-  }
+  };
   
   $scope.get_incomes = function(){
     console.log("requesting incomes from server");
     $scope.incomes = [];
     socket.emit("get_incomes");
-  }
+  };
 
   $scope.exit = function(){
     console.log("in exit");
     $scope.showloginform = false;
     $scope.showreg = false;  
-  }
+    $scope.reset_register();
+    $scope.password = '';
+    $scope.username = '';
+  };
 
   $scope.gotoLogin = function(){
     console.log("in goto login");
@@ -126,9 +129,19 @@ pollarizeApp.controller('appController', function($scope, $location, $anchorScro
     console.log('resetting reg form');
     $scope.newuser='';
     $scope.newpass='';
+    $scope.city='';
+    $scope.selected_state='';
     $scope.zip='';
     $scope.dob='';
-    $scope.city='';
+    $scope.selected_party=''; 
+    $scope.selected_ed_lev='';
+    $scope.selected_income='';
+  };
+
+  $scope.validate = function(){
+    if(isNaN($scope.zip[$scope.zip.length-1])){
+        $scope.zip = $scope.zip.substring(0,$scope.zip.length-1);
+      }
   };
 
   $scope.vote = function(choice,election,isNew){
