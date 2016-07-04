@@ -1,4 +1,5 @@
 Pollarize
+  The beginnings of a polling web app which uses AngularJS, flask, flask-socketio, and a PostgreSQL database.
 
 INSTALLING THE SYSTEM:
   1) Navigate to the directory you wish to use on your ubuntu vm
